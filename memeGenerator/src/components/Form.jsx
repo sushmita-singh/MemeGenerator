@@ -8,19 +8,32 @@ export default function Form() {
 
     const memeArray = memesData.data.memes;
     
-    const [meme, setMeme] = useState(memeArray[0].url)
+    const [memeImage, setMemeImage] = useState(memeArray[10].url)
+    const [topText, setTopText] = useState()
+    const [bottomText, setBottomText] = useState()
+    const [meme, setMeme] = useState({
+        topText: "",
+        bottomText: "",
+        imgSrc: "http://i.imgflip.com/1bij.jpg"
+    })
+    const [allMemeImages, setAllMemeImages] = useState(memesData.data.memes)
 
     function loadMeme() {
         let index = Math.floor(Math.random()*100);
         console.log(index);
-        setMeme(memesData[index].url);
-        document.getElementsByClassName('top-text-image');
+        setMeme(prev => {
+            return {
+                ...prev,
+                imgSrc: allMemeImages[index].url
+            }
+        })
     }
 
 
 
     return (
-        <form className='form--el'>
+        <>
+        <div className='form--el'>
             <div className='form--data'>
                 <div className='top-text-el'>
                     <label htmlFor="top-text">Top text</label>
@@ -32,12 +45,12 @@ export default function Form() {
                 </div>
             </div>
             <button className='submit-btn' onClick={loadMeme}>Get a new meme image 🖼</button>
-            <div className='meme'>
-                <p className='top-text-image'>Shut up</p>
-                <img src={meme} className='meme-image' alt='meme' />
-                {console.log(meme)}
-                <p className='bottom-text-image'>Take all my money</p>
-            </div>
-        </form>
+        </div>
+        <div className='meme'>
+            <p className='top-text-image'>{topText}</p>
+            <img src={meme.imgSrc} className='meme-image' alt='meme' />
+            <p className='bottom-text-image'>{bottomText}</p>
+        </div>
+        </>
     )
 }
